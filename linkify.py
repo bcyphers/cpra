@@ -1,6 +1,5 @@
 from collections import defaultdict
 import re
-import word_map
 
 CPRA = {
     'a': ['advertising and marketing'],

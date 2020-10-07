@@ -33,7 +33,7 @@ def walk_easy(soup):
         t = p.text
 
         # these are sections of CPRA, not sections of code
-        sec_match = re.match('SEC(TION|\.)\s\(d+)', t)
+        sec_match = re.match('SEC(TION|\.)\s(\d+)', t)
         if sec_match:
             tree = []
             p['id'] = 'sec-' + sec_match.group(2)
@@ -81,7 +81,7 @@ def walk_hard(soup):
         t = p.text
 
         # these are sections of CPRA, not sections of code
-        sec_match = re.match('SEC(TION|\.)\s\(d+)', t)
+        sec_match = re.match('SEC(TION|\.)\s(\d+)', t)
         if sec_match:
             old_tree = []
             new_tree = []
