@@ -1,6 +1,6 @@
-The California Privacy Rights Act
+# The California Privacy Rights Act
 
-Proposition 24 (2020)
+## Proposition 24 (2020)
 
 CCPA text retrieved from [Jake Snow\'s CCPA
 compendium](https://theccpa.org/) on 10/3/2020

@@ -821,7 +821,7 @@ request through that account.
 *(B) The disclosure of the required information shall cover the 12-month
 period preceding the business\'s receipt of the verifiable consumer
 request, provided that, upon the adoption of a regulation pursuant to
-paragraph {9} of subdivision (a} of Section 1798.185, a consumer may
+paragraph (9) of subdivision (a) of Section 1798.185, a consumer may
 request that the business disclose the required information beyond the
 12-month period and the business shall be required to provide such
 information unless doing so proves Impossible or would involve a
@@ -855,7 +855,7 @@ same. A service provider or contractor that collects personal
 information pursuant to a written contract with a business shall be
 required to assist the business through appropriate technical and
 organizational measures in complying with the requirements of
-subdivisions (d} through (f) of Section 1798.100, taking into account
+subdivisions (d) through (f) of Section 1798.100, taking into account
 the nature of the processing.*
 
 *(B)* For purposes of subdivision (b) of Section 1798.110:

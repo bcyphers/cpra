@@ -170,13 +170,17 @@ def replace_with_spans(soup):
     # replace `em` italics with spans
     for node in soup.find_all('em'):
         replacement = soup.new_tag('span', **{'class':'new-text'})
-        replacement.string = node.string
+        for i in range(len(node.contents)):
+            n = node.contents[0].extract()  # pop off the front
+            replacement.append(n)
         node.replace_with(replacement)
 
     # replace `del` strikethroughs with spans
     for node in soup.find_all('del'):
         replacement = soup.new_tag('span', **{'class':'old-text'})
-        replacement.string = node.string
+        for i in range(len(node.contents)):
+            n = node.contents[0].extract()  # pop off the front
+            replacement.append(n)
         node.replace_with(replacement)
 
 
