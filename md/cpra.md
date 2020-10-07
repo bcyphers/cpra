@@ -1071,7 +1071,7 @@ subdivision (b).*
 
 *(c)* A business *that is subject to this Section* shall*:*
 
-*(1) ~~n~~Not* require a consumer to create an account *or provide
+*(1)* ~~n~~*N*ot require a consumer to create an account *or provide
 additional information beyond what is necessary* in order to direct the
 business not to sell *or share* the consumer's personal information *or
 to limit the use or disclosure of the consumer's sensitive personal
@@ -1660,7 +1660,7 @@ information when:
 *(i)* intentionally disclose personal information*;* or
 
 *(ii)* ~~uses the business to~~ intentionally interact with ~~a~~ *one
-or more* third *~~party~~ parties;*~~, provided the third party does not
+or more* third ~~party~~ *parties;*~~, provided the third party does not
 also sell the personal information, unless that disclosure would be
 consistent with the provisions of this title. An intentional interaction
 occurs when the consumer intends to interact with the third party, via
@@ -1842,7 +1842,7 @@ following:
 \(1) The business ~~with whom the consumer intentionally interacts and~~
 that collects personal information from ~~consumers~~ *the consumer as
 part of the consumer's current interaction with the business* under this
-title~~.*;*~~
+title~~.~~*;*
 
 \(2) *A service provider to the business; or*
 
@@ -2620,7 +2620,7 @@ subdivision (ae) of Section 1798.140,* in order to address changes in
 technology, data collection practices, obstacles to implementation, and
 privacy concerns.
 
-\(2) Updating as needed the definition*s* of *"deidentified" and "*unique
+\(2) Updating as needed the definition*s* of *"deidentified" and *"unique
 identifier"~~s~~ to address changes in technology, data collection,
 obstacles to implementation, and privacy concerns, and *adding,
 modifying, or deleting*~~additional~~ categories to the definition of
@@ -2837,14 +2837,14 @@ disabling the opt-out preference signal globally; and*
 consumer accesses to set the opt-out preference signal, the consumer
 should see up to three choices, including*
 
-*(a) a global opt-out from sale and sharing of personal information,
+*(a.) a global opt-out from sale and sharing of personal information,
 including a direction to limit the use of sensitive personal
 information;*
 
-*(b) a choice to \"Limit The Use Of My Sensitive Personal Information\";
+*(b.) a choice to \"Limit The Use Of My Sensitive Personal Information\";
 and*
 
-*(c) a choice titled \"Do Not Sell/Do Not Share/Do Not Share My Personal
+*(c.) a choice titled \"Do Not Sell/Do Not Share/Do Not Share My Personal
 Information for Cross-Context Behavioral Advertising,\"*
 
 *(B) Issuing regulations to establish technical specifications for an

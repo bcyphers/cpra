@@ -29,6 +29,10 @@ p.sub4 {
   margin-left: 1.5in;
 }
 
+p.sub4 {
+  margin-left: 2.0in;
+}
+
 span.new-text {
   font-style: italic;
 }
