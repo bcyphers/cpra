@@ -33,6 +33,14 @@ p.sub5 {
   margin-left: 2.0in;
 }
 
+a {
+  color: black;
+}
+
+a:hover {
+  color: #0020c2;
+}
+
 span.new-text {
   font-style: italic;
 }

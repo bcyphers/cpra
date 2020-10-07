@@ -12,6 +12,5 @@ on 10/3/2020
 By default, overlap in the statute is shown in plain text; CPRA
 additions are shown in *italics*, and removals are in ~~strikethrough~~.
 
-View the document with old text hidden [here](/cpra/new.html), and with new text
-hidden [here](/cpra/old.html).
+View the document with only additions visible [here](/cpra/new.html), or with only deletions [here](/cpra/old.html).
 

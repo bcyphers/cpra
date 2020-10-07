@@ -9,7 +9,7 @@ classes = ['section', 'sub1', 'sub2', 'sub3', 'sub4', 'sub5']
 
 
 def update_tree(tree, label):
-    # levels: lowercase, numbers, uppercase, roman numerals
+    # levels: lowercase, numbers, uppercase, roman numerals, back to lowercase
     res = ['a?[a-z]+', '[0-9]+', '[A-Z]+', '(vi*)|(i+)|(iv)', "[a-z]\.", 'NULL']
     for i in reversed(range(len(tree))):
         if re.match(res[i] + '$', label):
@@ -30,21 +30,23 @@ def walk_easy(soup):
     paras = soup.find_all('p')
     tree = []
     for p in paras:
-        # TODO
-        # if there is both a strikethrough and an italic, handle it
-
         t = p.text
-        sec_match = re.match('(1798(\.\d+)+)\.?$', t)
+
+        # these are sections of CPRA, not sections of code
+        sec_match = re.match('SEC(TION|\.)\s\(d+)', t)
         if sec_match:
-            tree = [sec_match.group(1)]
-            id_text = tree[0]
-            p['id'] = id_text
-            p['class'] = 'section-code'
+            tree = []
+            p['id'] = 'sec-' + sec_match.group(2)
+            p['class'] = 'section-prop'
             continue
 
-        if re.match('SEC(TION|\.)\s\d+', t):
-            tree = []
-            p['class'] = 'section-bal'
+        # luckily, CPRA doesn't change any section titles
+        title_match = re.match('(1798(\.\d+)+)\.?$', t)
+        if title_match:
+            id_text = title_match.group(1)
+            tree = [id_text]
+            p['id'] = id_text
+            p['class'] = 'section-code'
             continue
 
         if len(tree) == 0:
@@ -79,16 +81,18 @@ def walk_hard(soup):
         t = p.text
 
         # these are sections of CPRA, not sections of code
-        if re.match('SEC(TION|\.)\s\d+', t):
+        sec_match = re.match('SEC(TION|\.)\s\(d+)', t)
+        if sec_match:
             old_tree = []
             new_tree = []
-            p['class'] = 'section-bal'
+            p['id'] = 'sec-' + sec_match.group(2)
+            p['class'] = 'section-prop'
             continue
 
         # luckily, CPRA doesn't change any section titles
-        sec_match = re.match('(1798(\.\d+)+)\.?$', t)
-        if sec_match:
-            id_text = sec_match.group(1)
+        title_match = re.match('(1798(\.\d+)+)\.?$', t)
+        if title_match:
+            id_text = title_match.group(1)
 
             old_tree = [id_text]
             new_tree = [id_text]
