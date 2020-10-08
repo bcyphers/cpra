@@ -113,8 +113,7 @@ def linkify(text, word_map, id_prefix=''):
             del substrs[k]
 
         # structure of markdown link
-        pref = '['
-        suf = '](#' + id_prefix + '1798.140(%s))' % imap[word]
+        link = '[%s](#' + id_prefix + '1798.140(' + imap[word] + '))'
 
         # create monster regex to find words
         # look for the word, in any case, separated by any whitespace, as long
@@ -125,16 +124,8 @@ def linkify(text, word_map, id_prefix=''):
                          '|\w)',        # and also non-word suffix
                          re.IGNORECASE)
 
-        # loop until there are no more matches
-        while True:
-            m = gex.search(text)
-            if not m:
-                break
-
-            # insert the start and end of the markdown link into the text
-            # do end first to preserve the start position
-            text = text[:m.end(0)] + suf + text[m.end(0):]
-            text = text[:m.start(0)] + pref + text[m.start(0):]
+        # match all instances of the word in the text
+        text = re.sub(gex, lambda m: link % m.group(0), text)
 
         # we're done with this word
         del imap[word]

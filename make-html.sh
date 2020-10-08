@@ -1,4 +1,4 @@
-#python make-md.py
+python make-md.py
 
 echo "Converting markdown to html..."
 pandoc -s md/both.md -t html -o html/both.html --metadata pagetitle='CPRA'
