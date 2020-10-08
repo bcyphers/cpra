@@ -5,6 +5,8 @@ import string
 from bs4 import BeautifulSoup
 
 
+SEC_PAT = 'SEC(TION|\.)\s(\d+)\.'
+TITLE_PAT = '(1798(\.\d+)+)\.?'
 LABEL_PAT = "\(\w+\.?\)"
 TAG_PAT = "\((\<\w+\>)?\w+\.?(\<\/\w+\>)?\)"
 COMPLEX_PAT = '\(<del>(\w+)<\/del><em>(\w+)<\/em>\)'
@@ -12,6 +14,7 @@ LINK_TMPL = '<a href="#%s" class="para-label">%s</a>'
 CLASSES = ['section', 'sub1', 'sub2', 'sub3', 'sub4', 'sub5']
 
 
+# is this elegant? no. is it necessary? also no
 def to_roman(n):
     nums = [(10, 'x'), (9, 'ix'), (5, 'v'), (4, 'iv'), (1, 'i')]
     res = ''
@@ -21,13 +24,19 @@ def to_roman(n):
 
     return res
 
+
 INDENT_LEVELS = [
+    # lowercase letters
     list(string.ascii_lowercase) +
         ['a' + l for l in string.ascii_lowercase],
+    # arabic numerals
     map(str, range(1, 100)),
+    # uppercase letters
     list(string.ascii_uppercase) +
         ['A' + l for l in string.ascii_uppercase],
+    # lowercase roman numerals
     map(to_roman, range(1, 20)),
+    # uppercase roman numerals
     map(lambda i: to_roman(i).upper(), range(1, 20))
 ]
 
@@ -39,7 +48,8 @@ def update_tree(tree, label):
         label == INDENT_LEVELS[len(tree) - 1][0]):
         tree.append(label)
     else:
-        # now check for the next value in the sequence
+        # now check for the next value in sequence for one of the levels we've
+        # already reached
         for i in reversed(range(1, len(tree))):
             lvl = INDENT_LEVELS[i-1]
 
@@ -61,7 +71,7 @@ def update_tree(tree, label):
 
 
 # create raw html for label link
-# ptrn: pattern to match
+# ptrn: pattern to match. must match whole section to be linked.
 # p: paragraph bs4 object to modify
 # pid: the ID of the paragraph
 def add_link(ptrn, p, pid):
@@ -92,23 +102,27 @@ def walk(soup, simple=True):
         t = p.text
 
         # these are sections of CPRA, not sections of code
-        sec_match = re.match('SEC(TION|\.)\s(\d+)', t)
+        sec_match = re.match(SEC_PAT, t)
         if sec_match:
             old_tree = []
             new_tree = []
-            p['id'] = 'sec-' + sec_match.group(2)
+
+            name = 'sec-' + sec_match.group(2)
+            p = add_link(SEC_PAT, p, name)
             p['class'] = 'section-prop'
+
             continue
 
         # luckily, CPRA doesn't change any section titles
-        title_match = re.match('(1798(\.\d+)+)\.?$', t)
+        title_match = re.match(TITLE_PAT, t)
         if title_match:
             name = title_match.group(1)
-
             old_tree = [name]
             new_tree = [name]
-            p['id'] = name
+
+            p = add_link(TITLE_PAT, p, name)
             p['class'] = 'section-code'
+
             continue
 
         # first entry in tree can only be a section header
