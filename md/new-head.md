@@ -11,6 +11,6 @@ on 10/3/2020
 
 Text added by CPRA is shown in *italics*.
 
-View the document with both additions and deletions [here](/cpra/both.html), or with
+View the document with both additions and deletions [here](/cpra/index.html), or with
 only deletions [here](/cpra/old.html).
 

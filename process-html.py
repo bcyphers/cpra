@@ -1,5 +1,6 @@
 import re
 import sys
+import string
 
 from bs4 import BeautifulSoup
 
@@ -11,29 +12,60 @@ LINK_TMPL = '<a href="#%s" class="para-label">%s</a>'
 CLASSES = ['section', 'sub1', 'sub2', 'sub3', 'sub4', 'sub5']
 
 
+def to_roman(n):
+    nums = [(10, 'x'), (9, 'ix'), (5, 'v'), (4, 'iv'), (1, 'i')]
+    res = ''
+    for val, num in nums:
+        res += num * (n // val)
+        n = n % val
+
+    return res
+
+INDENT_LEVELS = [
+    list(string.ascii_lowercase) +
+        ['a' + l for l in string.ascii_lowercase],
+    map(str, range(1, 100)),
+    list(string.ascii_uppercase) +
+        ['A' + l for l in string.ascii_uppercase],
+    map(to_roman, range(1, 20)),
+    map(lambda i: to_roman(i).upper(), range(1, 20))
+]
+
+
 # given a label, figure out where we are in the structure of the law
 def update_tree(tree, label):
-    # levels: lowercase, numbers, uppercase, roman numerals, back to lowercase
-    res = ['a?[a-z]+', '[0-9]+', '[A-Z]+', '(vi*)|(i+)|(iv)',
-           '([a-z]\.)|((VI*)|(I+)|(IV))', 'NULL']
-    for i in reversed(range(len(tree))):
-        if re.match(res[i] + '$', label):
-            # shorten the tree, cutting off the deeper lists
-            tree = tree[:i+1]
-            # add the next element of the new list
-            tree.append(label)
-            # create the id text
-            id_text = tree[0] + ''.join(['(%s)' % i for i in tree[1:]])
+    # first check for the next deepest level
+    if (len(tree) <= len(INDENT_LEVELS) and
+        label == INDENT_LEVELS[len(tree) - 1][0]):
+        tree.append(label)
+    else:
+        # now check for the next value in the sequence
+        for i in reversed(range(1, len(tree))):
+            lvl = INDENT_LEVELS[i-1]
 
-            # we're done
-            return tree, id_text
+            # find out where in the sequence we are
+            if (tree[i] in lvl and
+                label == lvl[lvl.index(tree[i]) + 1]):
+                # concat the tree and add the label to the end
+                tree = tree[:i] + [label]
+                break
+        else:
+            # if we get to here, the label is wonky
+            raise NameError('.'.join(tree + [label]))
 
-    # if we get to here, the label is wonky
-    raise NameError(label)
+    # create the id text
+    id_text = tree[0] + ''.join(['(%s)' % i for i in tree[1:]])
+
+    # we're done
+    return tree, id_text
 
 
 # create raw html for label link
-def add_link(ptrn, p, pid, raw):
+# ptrn: pattern to match
+# p: paragraph bs4 object to modify
+# pid: the ID of the paragraph
+def add_link(ptrn, p, pid):
+    raw = p.decode_contents()
     new_html = re.sub(ptrn,
                       lambda m: LINK_TMPL % (pid, m.group(0)),
                       raw,
@@ -79,10 +111,10 @@ def walk(soup, simple=True):
             p['class'] = 'section-code'
             continue
 
+        # first entry in tree can only be a section header
+        # therefore, if the tree is empty and we haven't matched a section
+        # header, continue to the next iteration
         if not old_tree and not new_tree:
-            # first entry in tree can only be a section header
-            # therefore, if the tree is empty and we haven't matched a section
-            # header, continue to the next iteration
             continue
 
         match = re.match(LABEL_PAT, t)
@@ -98,13 +130,13 @@ def walk(soup, simple=True):
             if simple:
                 try:
                     new_tree, name = update_tree(new_tree, ltext)
+                    p = add_link(TAG_PAT, p, name)
+                    last_class = CLASSES[len(new_tree) - 1]
                 except NameError as e:
-                    print('invalid label:', label)
+                    print('invalid label:', e)
+                    p['class'] = 'invalid'
 
-                p = add_link(TAG_PAT, p, name, raw)
-
-                last_class = CLASSES[len(new_tree) - 1]
-                p['class'] = last_class
+                p['class'] = p.get('class', '') + ' ' + last_class
                 continue
 
             # if there is both a strikethrough and an italic, handle it.
@@ -128,7 +160,7 @@ def walk(soup, simple=True):
                     last_class = CLASSES[len(new_tree) - 1]
 
                     # add link to label
-                    p = add_link(LABEL_PAT, p, 'cpra-' + name, raw)
+                    p = add_link(LABEL_PAT, p, 'cpra-' + name)
 
                 elif strike and strike.text.startswith(label):
                     # if the label is contained inside the del element, the label is
@@ -137,7 +169,7 @@ def walk(soup, simple=True):
                     last_class = CLASSES[len(old_tree) - 1]
 
                     # add link to label
-                    p = add_link(LABEL_PAT, p, 'ccpa-' + name, raw)
+                    p = add_link(LABEL_PAT, p, 'ccpa-' + name)
 
                 elif raw.startswith(label):
                     # if the label is in raw text, it hasn't changed in the CPRA
@@ -148,7 +180,7 @@ def walk(soup, simple=True):
                     last_class = CLASSES[len(new_tree) - 1]
 
                     # add link to label
-                    p = add_link(LABEL_PAT, p, 'cpra-' + name, raw)
+                    p = add_link(LABEL_PAT, p, 'cpra-' + name)
 
                 else:
                     # only other option is that this is a split label
@@ -161,14 +193,14 @@ def walk(soup, simple=True):
                     last_class = CLASSES[len(new_tree) - 1]
 
                     # add link to label
-                    p = add_link(COMPLEX_PAT, p, 'cpra-' + name, raw)
+                    p = add_link(COMPLEX_PAT, p, 'cpra-' + name)
 
             except NameError as e:
-                print('invalid label:', label)
+                print('invalid label:', e)
 
 
         # paragraphs without a heading get the same class as the one above
-        p['class'] = last_class
+        p['class'] = p.get('class', '') + ' ' + last_class
 
 
 # the html is filled with <em> and <del> elements; we want to replace those with

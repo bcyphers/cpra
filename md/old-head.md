@@ -11,6 +11,6 @@ on 10/3/2020
 
 Text removed by CPRA is shown in ~~strikethrough~~.
 
-View the document with both additions and deletions [here](/cpra/both.html), or with
+View the document with both additions and deletions [here](/cpra/index.html), or with
 only additions [here](/cpra/new.html).
 
