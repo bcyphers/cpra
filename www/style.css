@@ -9,7 +9,7 @@ p.section-code {
   font-weight: bold;
 }
 
-p.section-bal {
+p.section-prop {
   margin-top: 0.5in;
 }
 
@@ -39,6 +39,10 @@ a {
 
 a:hover {
   color: #0020c2;
+}
+
+a.para-label {
+  font-weight: bold;
 }
 
 span.new-text {

@@ -5,15 +5,17 @@ from bs4 import BeautifulSoup
 
 
 LABEL_PAT = "\(\w+\.?\)"
+TAG_PAT = "\((\<\w+\>)?\w+\.?(\<\/\w+\>)?\)"
 COMPLEX_PAT = '\(<del>(\w+)<\/del><em>(\w+)<\/em>\)'
-LINK_TMPL = '<a href="#%s">%s</a>'
+LINK_TMPL = '<a href="#%s" class="para-label">%s</a>'
 CLASSES = ['section', 'sub1', 'sub2', 'sub3', 'sub4', 'sub5']
 
 
 # given a label, figure out where we are in the structure of the law
 def update_tree(tree, label):
     # levels: lowercase, numbers, uppercase, roman numerals, back to lowercase
-    res = ['a?[a-z]+', '[0-9]+', '[A-Z]+', '(vi*)|(i+)|(iv)', "[a-z]\.", 'NULL']
+    res = ['a?[a-z]+', '[0-9]+', '[A-Z]+', '(vi*)|(i+)|(iv)',
+           '([a-z]\.)|((VI*)|(I+)|(IV))', 'NULL']
     for i in reversed(range(len(tree))):
         if re.match(res[i] + '$', label):
             # shorten the tree, cutting off the deeper lists
@@ -99,7 +101,7 @@ def walk(soup, simple=True):
                 except NameError as e:
                     print('invalid label:', label)
 
-                p = add_link(LABEL_PAT, p, name, raw)
+                p = add_link(TAG_PAT, p, name, raw)
 
                 last_class = CLASSES[len(new_tree) - 1]
                 p['class'] = last_class
@@ -135,7 +137,7 @@ def walk(soup, simple=True):
                     last_class = CLASSES[len(old_tree) - 1]
 
                     # add link to label
-                    p = add_link(LABEL_PAT, p, 'cpra-' + name, raw)
+                    p = add_link(LABEL_PAT, p, 'ccpa-' + name, raw)
 
                 elif raw.startswith(label):
                     # if the label is in raw text, it hasn't changed in the CPRA

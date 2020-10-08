@@ -227,7 +227,7 @@ affects children.*
 *C. Implementation of the Law*
 
 *1. The rights of [consumers](#cpra-1798.140(i)) and the responsibilities of [businesses](#cpra-1798.140(d))
-should be Implemented with the goal of strengthening [consumer](#cpra-1798.140(i)) privacy,
+should be implemented with the goal of strengthening [consumer](#cpra-1798.140(i)) privacy,
 while giving attention to the impact on [business](#cpra-1798.140(d)) and innovation.
 [Consumer](#cpra-1798.140(i)) privacy and the development of beneficial new products and
 [services](#cpra-1798.140(af)) are not necessarily incompatible goals. Strong [consumer](#cpra-1798.140(i)) privacy
@@ -246,12 +246,12 @@ exercise their rights, and assist [businesses](#cpra-1798.140(d)) with complianc
 continuing goal of strengthening [consumer](#cpra-1798.140(i)) privacy.*
 
 *5. The law should enable pro-[consumer](#cpra-1798.140(i)) new products and [services](#cpra-1798.140(af)) and
-promote efficiency of Implementation for [business](#cpra-1798.140(d)), provided that the
+promote efficiency of implementation for [business](#cpra-1798.140(d)), provided that the
 amendments do not compromise or weaken [consumer](#cpra-1798.140(i)) privacy.*
 
 *6. The law should be amended, if necessary, to improve its operation,
 provided that the amendments do not compromise or weaken [consumer](#cpra-1798.140(i))
-privacy, while giving attention to the Impact on [business](#cpra-1798.140(d)) and
+privacy, while giving attention to the impact on [business](#cpra-1798.140(d)) and
 innovation.*
 
 *7. [Businesses](#cpra-1798.140(d)) should be held accountable for violating the law through
@@ -841,7 +841,7 @@ request](#cpra-1798.140(ak)), provided that, upon the adoption of a regulation p
 paragraph (9) of subdivision (a) of Section 1798.185, a [consumer](#cpra-1798.140(i)) may
 request that the [business](#cpra-1798.140(d)) disclose the required information beyond the
 12-month period and the [business](#cpra-1798.140(d)) shall be required to provide such
-information unless doing so proves Impossible or would involve a
+information unless doing so proves impossible or would involve a
 disproportionate effort. A [consumer](#cpra-1798.140(i))\'s right to request required
 information beyond the 12-month period, and a [business](#cpra-1798.140(d))\'s obligation to
 provide such information, shall only apply to [personal information](#cpra-1798.140(v))
@@ -1063,8 +1063,8 @@ disclosure of the [consumer](#cpra-1798.140(i))\'s [sensitive personal informati
 *(2) A [business](#cpra-1798.140(d)) that allows [consumers](#cpra-1798.140(i)) to opt-out of the [sale](#cpra-1798.140(ad)) or [sharing](#cpra-1798.140(ah))
 of their [personal information](#cpra-1798.140(v)) and to limit the use of their [sensitive
 personal information](#cpra-1798.140(ae)) pursuant to paragraph (1) may provide a link to a
-webpage that enables the [consumer](#cpra-1798.140(i)) to [consent](#cpra-1798.140(h)) to the [business](#cpra-1798.140(d)) Ignoring
-the apt-out preference signal with respect to that [business](#cpra-1798.140(d))\'s [sale](#cpra-1798.140(ad)) or
+webpage that enables the [consumer](#cpra-1798.140(i)) to [consent](#cpra-1798.140(h)) to the [business](#cpra-1798.140(d)) ignoring
+the opt-out preference signal with respect to that [business](#cpra-1798.140(d))\'s [sale](#cpra-1798.140(ad)) or
 [sharing](#cpra-1798.140(ah)) of the [consumer](#cpra-1798.140(i))\'s [personal information](#cpra-1798.140(v)) or the use of the
 [consumer](#cpra-1798.140(i))\'s [sensitive personal information](#cpra-1798.140(ae)) for additional purposes
 provided that:*
@@ -2982,7 +2982,7 @@ is sooner.
 *(d) Notwithstanding subdivision (a), the timeline for adopting final
 regulations required by the Act adding this subdivision shall be July 1,
 2022. Beginning the later of July 1, 2021, or six months after the
-Agency provides notice to the Attorney General that It is prepared to
+Agency provides notice to the Attorney General that it is prepared to
 begin rulemaking under this title, the authority assigned to the
 Attorney General to adopt regulations under this section shall be
 exercised by the California Privacy Protection Agency. Notwithstanding
@@ -2990,7 +2990,7 @@ any other law, civil and administrative enforcement of the provisions of
 law added or amended by this Act shall not commence until July 1, 2023,
 and shall only apply to violations occurring on or after that date.
 Enforcement of provisions of law contained in the California [Consumer](#cpra-1798.140(i))
-Privacy Act of 2018 amended or reenacted by this Act shall remain In
+Privacy Act of 2018 amended or reenacted by this Act shall remain in
 effect and shall be enforceable until the same provisions of this Act
 become enforceable.*
 
@@ -3510,7 +3510,7 @@ application had been made.*
 provisions of the other measure or measures shall be deemed to be in
 conflict with this measure. In the event that this measure receives a
 greater number of affirmative votes than a measure deemed to be in
-conflict with it, the provisions of this measure shall prevail ln their
+conflict with it, the provisions of this measure shall prevail in their
 entirety, and the other measure or measures shall be null and void.*
 
 *(b) If this measure is approved by the voters but superseded by law by
