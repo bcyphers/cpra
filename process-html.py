@@ -44,7 +44,6 @@ def add_link(ptrn, p, pid, raw):
         new_p.append(new_node.contents[0].extract())
     p.replace_with(new_p)
 
-    print(new_p)
     return new_p
 
 
