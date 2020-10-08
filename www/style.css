@@ -9,6 +9,10 @@ body {
   color: red;
 }
 
+.invalid a {
+  color: red;
+}
+
 p.section-code {
   font-weight: bold;
 }

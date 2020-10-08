@@ -5,11 +5,15 @@ import string
 from bs4 import BeautifulSoup
 
 
+IN_TAGS_PAT = '(\<\w+\>)?%s(\<\/\w+\>)?'
+
 SEC_PAT = 'SEC(TION|\.)\s(\d+)\.'
-TITLE_PAT = '(1798(\.\d+)+)\.?'
+TITLE_PAT = '(1798(\.\d+)+)\.?$'
+TAG_TITLE_PAT = IN_TAGS_PAT % TITLE_PAT[:-1]
 LABEL_PAT = "\(\w+\.?\)"
-TAG_PAT = "\((\<\w+\>)?\w+\.?(\<\/\w+\>)?\)"
+TAG_LABEL_PAT = '\(' + (IN_TAGS_PAT % '\w+\.?') + '\)'
 COMPLEX_PAT = '\(<del>(\w+)<\/del><em>(\w+)<\/em>\)'
+
 LINK_TMPL = '<a href="#%s" class="para-label">%s</a>'
 CLASSES = ['section', 'sub1', 'sub2', 'sub3', 'sub4', 'sub5']
 
@@ -120,7 +124,7 @@ def walk(soup, simple=True):
             old_tree = [name]
             new_tree = [name]
 
-            p = add_link(TITLE_PAT, p, name)
+            p = add_link(TAG_TITLE_PAT, p, name)
             p['class'] = 'section-code'
 
             continue
@@ -144,7 +148,7 @@ def walk(soup, simple=True):
             if simple:
                 try:
                     new_tree, name = update_tree(new_tree, ltext)
-                    p = add_link(TAG_PAT, p, name)
+                    p = add_link(TAG_LABEL_PAT, p, name)
                     last_class = CLASSES[len(new_tree) - 1]
                 except NameError as e:
                     print('invalid label:', e)
