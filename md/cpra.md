@@ -210,7 +210,7 @@ affects children.*
 *C. Implementation of the Law*
 
 *1. The rights of consumers and the responsibilities of businesses
-should be Implemented with the goal of strengthening consumer privacy,
+should be implemented with the goal of strengthening consumer privacy,
 while giving attention to the impact on business and innovation.
 Consumer privacy and the development of beneficial new products and
 services are not necessarily incompatible goals. Strong consumer privacy
@@ -229,12 +229,12 @@ exercise their rights, and assist businesses with compliance, with the
 continuing goal of strengthening consumer privacy.*
 
 *5. The law should enable pro-consumer new products and services and
-promote efficiency of Implementation for business, provided that the
+promote efficiency of implementation for business, provided that the
 amendments do not compromise or weaken consumer privacy.*
 
 *6. The law should be amended, if necessary, to improve its operation,
 provided that the amendments do not compromise or weaken consumer
-privacy, while giving attention to the Impact on business and
+privacy, while giving attention to the impact on business and
 innovation.*
 
 *7. Businesses should be held accountable for violating the law through
@@ -824,7 +824,7 @@ request, provided that, upon the adoption of a regulation pursuant to
 paragraph (9) of subdivision (a) of Section 1798.185, a consumer may
 request that the business disclose the required information beyond the
 12-month period and the business shall be required to provide such
-information unless doing so proves Impossible or would involve a
+information unless doing so proves impossible or would involve a
 disproportionate effort. A consumer\'s right to request required
 information beyond the 12-month period, and a business\'s obligation to
 provide such information, shall only apply to personal information
@@ -1046,8 +1046,8 @@ disclosure of the consumer\'s sensitive personal information, or both.*
 *(2) A business that allows consumers to opt-out of the sale or sharing
 of their personal information and to limit the use of their sensitive
 personal information pursuant to paragraph (1) may provide a link to a
-webpage that enables the consumer to consent to the business Ignoring
-the apt-out preference signal with respect to that business\'s sale or
+webpage that enables the consumer to consent to the business ignoring
+the opt-out preference signal with respect to that business\'s sale or
 sharing of the consumer\'s personal information or the use of the
 consumer\'s sensitive personal information for additional purposes
 provided that:*
@@ -2965,7 +2965,7 @@ is sooner.
 *(d) Notwithstanding subdivision (a), the timeline for adopting final
 regulations required by the Act adding this subdivision shall be July 1,
 2022. Beginning the later of July 1, 2021, or six months after the
-Agency provides notice to the Attorney General that It is prepared to
+Agency provides notice to the Attorney General that it is prepared to
 begin rulemaking under this title, the authority assigned to the
 Attorney General to adopt regulations under this section shall be
 exercised by the California Privacy Protection Agency. Notwithstanding
@@ -2973,7 +2973,7 @@ any other law, civil and administrative enforcement of the provisions of
 law added or amended by this Act shall not commence until July 1, 2023,
 and shall only apply to violations occurring on or after that date.
 Enforcement of provisions of law contained in the California Consumer
-Privacy Act of 2018 amended or reenacted by this Act shall remain In
+Privacy Act of 2018 amended or reenacted by this Act shall remain in
 effect and shall be enforceable until the same provisions of this Act
 become enforceable.*
 
@@ -3493,7 +3493,7 @@ consumer privacy shall appear on the same statewide ballot, the
 provisions of the other measure or measures shall be deemed to be in
 conflict with this measure. In the event that this measure receives a
 greater number of affirmative votes than a measure deemed to be in
-conflict with it, the provisions of this measure shall prevail ln their
+conflict with it, the provisions of this measure shall prevail in their
 entirety, and the other measure or measures shall be null and void.*
 
 *(b) If this measure is approved by the voters but superseded by law by
