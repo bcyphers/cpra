@@ -1,4 +1,4 @@
-python make-md.py
+#python make-md.py
 
 pandoc -s md/both.md -t html -o html/both.html --metadata pagetitle='CPRA'
 pandoc -s md/new.md -t html -o html/new.html --metadata pagetitle='CPRA'

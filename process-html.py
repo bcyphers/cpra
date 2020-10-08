@@ -4,10 +4,13 @@ import sys
 from bs4 import BeautifulSoup
 
 
-label_pat = "\(\w+\.?\)"
-classes = ['section', 'sub1', 'sub2', 'sub3', 'sub4', 'sub5']
+LABEL_PAT = "\(\w+\.?\)"
+COMPLEX_PAT = '\(<del>(\w+)<\/del><em>(\w+)<\/em>\)'
+LINK_TMPL = '<a href="#%s">%s</a>'
+CLASSES = ['section', 'sub1', 'sub2', 'sub3', 'sub4', 'sub5']
 
 
+# given a label, figure out where we are in the structure of the law
 def update_tree(tree, label):
     # levels: lowercase, numbers, uppercase, roman numerals, back to lowercase
     res = ['a?[a-z]+', '[0-9]+', '[A-Z]+', '(vi*)|(i+)|(iv)', "[a-z]\.", 'NULL']
@@ -23,55 +26,30 @@ def update_tree(tree, label):
             # we're done
             return tree, id_text
 
+    # if we get to here, the label is wonky
     raise NameError(label)
 
 
-def walk_easy(soup):
-    paras = soup.find_all('p')
-    tree = []
-    for p in paras:
-        t = p.text
+# create raw html for label link
+def add_link(ptrn, p, pid, raw):
+    new_html = re.sub(ptrn,
+                      lambda m: LINK_TMPL % (pid, m.group(0)),
+                      raw,
+                      count=1)
 
-        # these are sections of CPRA, not sections of code
-        sec_match = re.match('SEC(TION|\.)\s(\d+)', t)
-        if sec_match:
-            tree = []
-            p['id'] = 'sec-' + sec_match.group(2)
-            p['class'] = 'section-prop'
-            continue
+    # add it to beautifulsoup object (why is this so difficult?)
+    new_node = BeautifulSoup(new_html, features='html.parser')
+    new_p = soup.new_tag('p', **{'id': pid})
+    for i in range(len(new_node.contents)):
+        new_p.append(new_node.contents[0].extract())
+    p.replace_with(new_p)
 
-        # luckily, CPRA doesn't change any section titles
-        title_match = re.match('(1798(\.\d+)+)\.?$', t)
-        if title_match:
-            id_text = title_match.group(1)
-            tree = [id_text]
-            p['id'] = id_text
-            p['class'] = 'section-code'
-            continue
-
-        if len(tree) == 0:
-            # first entry in tree can only be a section header
-            # therefore, if the tree is empty and we haven't matched a section
-            # header, continue to the next iter
-            continue
-
-        match = re.match(label_pat, t)
-
-        # we've matched a code section
-        if match:
-            label = match.group()
-            label = label[1:-1]  # get rid of parens
-            try:
-                tree, id_text = update_tree(tree, label)
-                p['id'] = id_text
-            except NameError as e:
-                print('invalid label:', label)
-
-        # paragraphs without a heading get the same class as the one above
-        p['class'] = classes[len(tree) - 1]
+    print(new_p)
+    return new_p
 
 
-def walk_hard(soup):
+# walk through the DOM and add IDs to the paragraphs
+def walk(soup, simple=True):
     paras = soup.find_all('p')
     old_tree = []
     new_tree = []
@@ -92,24 +70,42 @@ def walk_hard(soup):
         # luckily, CPRA doesn't change any section titles
         title_match = re.match('(1798(\.\d+)+)\.?$', t)
         if title_match:
-            id_text = title_match.group(1)
+            name = title_match.group(1)
 
-            old_tree = [id_text]
-            new_tree = [id_text]
-            p['id'] = id_text
+            old_tree = [name]
+            new_tree = [name]
+            p['id'] = name
             p['class'] = 'section-code'
             continue
 
         if not old_tree and not new_tree:
             # first entry in tree can only be a section header
             # therefore, if the tree is empty and we haven't matched a section
-            # header, continue to the next iter
+            # header, continue to the next iteration
             continue
 
-        match = re.match(label_pat, t)
+        match = re.match(LABEL_PAT, t)
 
         # we've matched a code section
         if match:
+            label = match.group()
+            ltext = label[1:-1]  # what's inside the parens
+            raw = p.decode_contents()
+
+            # if we don't have to differentiate between two styles of label, we
+            # don't care about the formatting.
+            if simple:
+                try:
+                    new_tree, name = update_tree(new_tree, ltext)
+                except NameError as e:
+                    print('invalid label:', label)
+
+                p = add_link(LABEL_PAT, p, name, raw)
+
+                last_class = CLASSES[len(new_tree) - 1]
+                p['class'] = last_class
+                continue
+
             # if there is both a strikethrough and an italic, handle it.
             # there are only a couple of possibilities:
             # 1. the label is all plain, all italic, or all strikethrough from
@@ -117,30 +113,30 @@ def walk_hard(soup):
             # 2. the left and right parens are plain, and there are two
             #   different labels inside. First one is strikethrough, and second
             #   one is italic.
-
-            label = match.group()
-            ltext = label[1:-1]
-
+            #
             # look for the label inside italics and strikethroughs
             # luckily, the ones we care about will always be the first elements
             italic = p.find('em')
             strike = p.find('del')
-            raw = p.decode_contents()
 
             try:
                 if italic and italic.text.startswith(label):
                     # if the label is contained inside the em element, the label is
                     # entirely new
                     new_tree, name = update_tree(new_tree, ltext)
-                    p['id'] = 'cpra-' + name
-                    last_class = classes[len(new_tree) - 1]
+                    last_class = CLASSES[len(new_tree) - 1]
+
+                    # add link to label
+                    p = add_link(LABEL_PAT, p, 'cpra-' + name, raw)
 
                 elif strike and strike.text.startswith(label):
                     # if the label is contained inside the del element, the label is
                     # entirely old
                     old_tree, name = update_tree(old_tree, ltext)
-                    p['id'] = 'ccpa-' + name
-                    last_class = classes[len(old_tree) - 1]
+                    last_class = CLASSES[len(old_tree) - 1]
+
+                    # add link to label
+                    p = add_link(LABEL_PAT, p, 'cpra-' + name, raw)
 
                 elif raw.startswith(label):
                     # if the label is in raw text, it hasn't changed in the CPRA
@@ -148,19 +144,23 @@ def walk_hard(soup):
                     # technically part of both
                     old_tree, _ = update_tree(old_tree, ltext)
                     new_tree, name = update_tree(new_tree, ltext)
-                    p['id'] = 'cpra-' + name
-                    last_class = classes[len(new_tree) - 1]
+                    last_class = CLASSES[len(new_tree) - 1]
+
+                    # add link to label
+                    p = add_link(LABEL_PAT, p, 'cpra-' + name, raw)
 
                 else:
                     # only other option is that this is a split label
-                    raw_match = re.match('\(<del>(\w+)<\/del><em>(\w+)<\/em>\)', raw)
+                    raw_match = re.match(COMPLEX_PAT, raw)
                     l_old = raw_match.group(1)
                     l_new = raw_match.group(2)
 
                     old_tree, _ = update_tree(old_tree, l_old)
                     new_tree, name = update_tree(new_tree, l_new)
-                    p['id'] = 'cpra-' + name
-                    last_class = classes[len(new_tree) - 1]
+                    last_class = CLASSES[len(new_tree) - 1]
+
+                    # add link to label
+                    p = add_link(COMPLEX_PAT, p, 'cpra-' + name, raw)
 
             except NameError as e:
                 print('invalid label:', label)
@@ -170,6 +170,8 @@ def walk_hard(soup):
         p['class'] = last_class
 
 
+# the html is filled with <em> and <del> elements; we want to replace those with
+# <spans> with classes for easier styling.
 def replace_with_spans(soup):
     # replace `em` italics with spans
     for node in soup.find_all('em'):
@@ -194,9 +196,9 @@ if __name__ == '__main__':
 
     # annotate text
     if sys.argv[3] == '1':
-        walk_hard(soup)
+        walk(soup, simple=False)
     else:
-        walk_easy(soup)
+        walk(soup, simple=True)
 
     # replace em and del with spans
     replace_with_spans(soup)

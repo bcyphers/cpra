@@ -1,6 +1,8 @@
 from collections import defaultdict
 import re
 
+# Map of code section to terms defined therein
+# we only look for verbatim matches, hence the repitition
 CPRA = {
     'a': ['advertising and marketing'],
     'b': ['aggregate consumer information'],
@@ -72,14 +74,18 @@ CCPA = {
 }
 
 
+# Process markdown to find references to defined terms, then link to the
+# section where each term is defined
 def linkify(text, word_map, id_prefix=''):
     # build inverse map
+    # {term: code section}
     imap = {}
     for k, v in word_map.items():
         for w in v:
             imap[w] = k
 
-    # substring lookup
+    # create substring lookup map
+    # {word: [words it is a substring of]}
     substrs = defaultdict(list)
     for w1 in imap.keys():
         for w2 in imap.keys():
@@ -89,7 +95,7 @@ def linkify(text, word_map, id_prefix=''):
     # this is DAG-ish. Want to make sure we don't linkify "personal" before
     # "personal information".
     for i in range(len(imap)):
-        # pick a word that is not a substring
+        # pick a word that is not a substring of another word
         word = list(set(imap) - set(substrs)).pop()
 
         # unblock words that are substrings of this one
@@ -102,6 +108,7 @@ def linkify(text, word_map, id_prefix=''):
                 else:
                     rm.append(k)  # can't modify the dict inline
 
+        # now we can modify the dict
         for k in rm:
             del substrs[k]
 
@@ -109,7 +116,9 @@ def linkify(text, word_map, id_prefix=''):
         pref = '['
         suf = '](#' + id_prefix + '1798.140(%s))' % imap[word]
 
-        # create monster regex
+        # create monster regex to find words
+        # look for the word, in any case, separated by any whitespace, as long
+        # as it's not inside another markdown link
         gex = re.compile('(?<!\w)' +    # non-word character preceding
                          word.replace(' ', '\s+') +     # the word itself
                          '(?!' + '([^\[]*\])' +     # negative lookahead for ]
@@ -121,11 +130,13 @@ def linkify(text, word_map, id_prefix=''):
             m = gex.search(text)
             if not m:
                 break
-            end = m.end(0)
-            start = m.start(0)
-            text = text[:end] + suf + text[end:]
-            text = text[:start] + pref + text[start:]
 
+            # insert the start and end of the markdown link into the text
+            # do end first to preserve the start position
+            text = text[:m.end(0)] + suf + text[m.end(0):]
+            text = text[:m.start(0)] + pref + text[m.start(0):]
+
+        # we're done with this word
         del imap[word]
 
     return text
